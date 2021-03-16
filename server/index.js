@@ -9,8 +9,8 @@ const io = require('socket.io')(http);
 
 io.on("connection", (socket) => {
    console.log('connected');
-   socket.emit('mert');
-
+   socket.emit('mert','mert');
+  
   });
   
   const getApiAndEmit = socket => {
