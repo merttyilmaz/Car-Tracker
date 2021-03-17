@@ -22,7 +22,7 @@ io.on("connection", (socket) => {
     clearInterval(interval);
   });
 });
-//deneme
+
 const getApiAndEmit = socket => {
   socket.emit("con",gps[index])
   index++;
