@@ -1,25 +1,33 @@
 const json=require('./gpsData.json');
 const gps=json.gpsData;
 
-
 const app = require('express')();
 const http = require('http').Server(app);
-const io = require('socket.io')(http);
-
-io.set('transports', ['websocket'])
-
-io.on("connection", (socket) => { 
-  // console.log("Backend, connected!"); // user or client is connected.
-  console.log("User connected with a unique socketId ", socket.id);
-  socket.emit('mert','connected');  
-  socket.on("msg", function (msg) {
-        console.log("entered!"); // <--- It will print now !
-        
-        console.log("message: " + msg);
-        
-    });
-
+const io = require('socket.io')(http, {
+  cors: {
+    origin: '*',
+  }
 });
-http.listen(3030, () => {
-  console.log('listening on *:3030');
+
+let index = 0;
+let interval;
+
+io.on("connection", (socket) => {
+  if (interval) {
+    clearInterval(interval);
+  }
+  interval = setInterval(() => getApiAndEmit(socket), 1000);
+  socket.on("disconnect", () => {
+    console.log("Client disconnected");
+    clearInterval(interval);
+  });
 });
+
+const getApiAndEmit = socket => {
+  socket.emit("con",gps[index])
+  index++;
+};
+
+http.listen(4000, function() {
+  console.log('listening on port 4000')
+})
