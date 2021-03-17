@@ -1,3 +1,3 @@
 # carTracker
 
-Hello 
+Aracın hareket ettğini görmek için biraz zoomlamanız gerekiyor.
