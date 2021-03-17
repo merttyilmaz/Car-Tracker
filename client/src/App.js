@@ -1,4 +1,5 @@
 import './App.css';
+
 import React,{useState,useEffect} from 'react';
 import io from 'socket.io-client';
 import {MapContainer,TileLayer,Marker,Popup} from 'react-leaflet';
@@ -26,20 +27,21 @@ function App() {
           attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-             {(() => {
-        if (settings!=null) {
-          return (
-            <div>
-              <Marker position={[settings.location.coordinates[0],settings.location.coordinates[1]]}>
-                  <Popup>
-                    <p>{settings.deviceID}</p>
-                    <p>{settings.timestamp}</p>
-                    <p>{settings.speed}</p>
-                    <p>{settings.t0}</p>
-                  </Popup>
-              </Marker>
-
-            </div>
+        {(() => {
+          if (settings!=null) {
+            return (
+              <div>
+                <Marker position={[settings.location.coordinates[0],settings.location.coordinates[1]]}>
+                    <Popup>
+                      <h1>Car's Data</h1>
+                      <p>Speed: {settings.speed}</p>
+                      <p>Plate Number: {settings.t0}</p>
+                      <p>Group Name: {settings.deviceID}</p>
+                      <p>Location Type: {settings.location.type}</p>
+                      <p>Timestamp: {settings.timestamp}</p>
+                    </Popup>
+                </Marker>
+              </div>
           )
         }
       })()}
