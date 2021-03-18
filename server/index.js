@@ -1,5 +1,5 @@
-const json=require('./gpsData.json');
-const gps=json.gpsData;
+const json = require('./gpsData.json');
+const gps = json.gpsData;
 
 const app = require('express')();
 const http = require('http').Server(app);
@@ -17,17 +17,20 @@ io.on("connection", (socket) => {
     clearInterval(interval);
   }
   interval = setInterval(() => getApiAndEmit(socket), 1000);
-  socket.on("disconnect", () => {
-    console.log("Client disconnected");
-    clearInterval(interval);
-  });
+    socket.on("disconnect", () => {
+      console.log("Client disconnected");
+      clearInterval(interval);
+    });
 });
 
 const getApiAndEmit = socket => {
-  socket.emit("con",gps[index])
+  socket.emit( "con" , gps[index] )
   index++;
+  if( index == 774 ){
+    clearInterval(interval);
+  }
 };
 
 http.listen(4000, function() {
-  console.log('listening on port 4000')
+  console.log('listening on port 4000');
 })
