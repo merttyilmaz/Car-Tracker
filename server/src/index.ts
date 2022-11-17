@@ -1,7 +1,7 @@
 import express from "express";
 import http from "http";
-import { Server } from "socket.io";
-import cors from "cors";
+import { Server, Socket } from "socket.io";
+import { DefaultEventsMap } from "socket.io/dist/typed-events";
 
 import data from "../data/gpsData.json";
 
@@ -14,12 +14,25 @@ const io = new Server(server, {
 });
 
 io.on("connection", (socket) => {
-  setInterval(() => {
-    socket.emit(
-      "get-data",
-      data.gpsData.forEach((item) => item)
-    );
-  }, 2000);
+  sendData(socket);
 });
+
+let gpsDataIndex = 0;
+
+function sendData(
+  socket: Socket<DefaultEventsMap, DefaultEventsMap, DefaultEventsMap, any>
+) {
+  socket.emit("get-data", data.gpsData[gpsDataIndex]);
+
+  gpsDataIndex++;
+
+  if (gpsDataIndex === data.gpsData.length) {
+    gpsDataIndex = 0;
+  }
+
+  setTimeout(() => {
+    sendData(socket);
+  }, 1000);
+}
 
 server.listen(8080);
